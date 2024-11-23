@@ -5,37 +5,43 @@ from streamlit_ace import st_ace
 
 def get_raw_request(selected_model_ids, prompt):
     """
-    Dynamically generates raw requests for selected models and stores them in session state.
+    Dynamically generates and allows editing of raw requests for selected models.
+    Tracks user edits in session state.
     """
     st.subheader("Raw Request")
     st.write("The raw JSON request automatically populates below based on your inputs.")
 
     if not selected_model_ids or not prompt:
         st.warning("Select models and enter a prompt to generate a raw request.")
-        return
+        return None
 
     # Initialize session state for raw requests if not already present
     if "raw_requests" not in st.session_state:
         st.session_state["raw_requests"] = {}
 
-    # Update raw_requests in session state based on selected_model_ids
-    for model_id in selected_model_ids:
+    # Generate or retrieve raw requests for each selected model
+    for idx, model_id in enumerate(selected_model_ids):
+        # Generate a default request if not already present in session state
         if model_id not in st.session_state["raw_requests"]:
-            # Generate the raw request only if it doesn't already exist
-            raw_request = ModelNativeRequest(model_id, prompt).get_request()
-            st.session_state["raw_requests"][model_id] = raw_request
+            default_request = ModelNativeRequest(model_id, prompt).get_request()
+            st.session_state["raw_requests"][model_id] = default_request
 
-    # Remove requests for unselected models
-    for model_id in list(st.session_state["raw_requests"].keys()):
-        if model_id not in selected_model_ids:
-            del st.session_state["raw_requests"][model_id]
-
-    # Display all raw requests using unique keys
-    for idx, (model_id, raw_request) in enumerate(st.session_state["raw_requests"].items()):
+        # Render the code editor for the current request
         st.write(f"Request for Model ID: {model_id}")
-        st_ace(
-            value=json.dumps(raw_request, indent=4),
+        edited_request = st_ace(
+            value=json.dumps(st.session_state["raw_requests"][model_id], indent=4),
             language="json",
-            key=f"st_ace_{idx}"  # Unique key for each editor
+            key=f"st_ace_{model_id}",  # Unique key for each editor
+            height=300,
         )
+
+        # Update session state with the edited request if not None
+        if edited_request:
+            try:
+                st.session_state["raw_requests"][model_id] = json.loads(edited_request)
+            except json.JSONDecodeError:
+                st.error(f"Invalid JSON in the request for Model ID: {model_id}")
+
+    return st.session_state["raw_requests"]
+
 

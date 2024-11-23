@@ -1,5 +1,7 @@
 from io import StringIO
 import logging
+from datetime import datetime
+from src.core.logger import JSONFormatter
 
 class StreamlitLogHandler(logging.Handler):
     """
@@ -8,8 +10,10 @@ class StreamlitLogHandler(logging.Handler):
     def __init__(self):
         super().__init__()
         self.log_buffer = StringIO()
+        self.formatter = JSONFormatter()
 
     def emit(self, record):
+        # Use JSONFormatter to format the log record
         log_entry = self.format(record)
         self.log_buffer.write(log_entry + "\n")
 

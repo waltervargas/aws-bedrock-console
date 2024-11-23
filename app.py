@@ -13,17 +13,25 @@ from src.core.streamlit_log_handler import StreamlitLogHandler
 import logging
 
 def main():
-    # configure logging for boto3
-    log_handler = StreamlitLogHandler()
-    configure_boto3_logger()
+    st.set_page_config(page_title="Bedrock Developer Assistant", layout="wide")
+
+    if "log_handler" not in st.session_state:
+        st.session_state["log_handler"] = StreamlitLogHandler()  # Initialize the log handler
+
+    log_handler = st.session_state["log_handler"]
+    configure_boto3_logger(level=logging.DEBUG)
     logging.getLogger("botocore").addHandler(log_handler)
     logging.getLogger("boto3").addHandler(log_handler)
 
-    st.set_page_config(page_title="Bedrock Developer Assistant", layout="wide")
-
     selected_region = region_selector.select_region()
-    models = list_fundation_models_api(region=selected_region)
 
+    models_response = list_fundation_models_api(region=selected_region)
+    if isinstance(models_response, dict) and "error" in models_response:
+        st.error(models_response["error"])
+        st.info("Please ensure your AWS credentials are refreshed before retrying.")
+        return
+    models = models_response
+    
     if "prompt" not in st.session_state:
         st.session_state["prompt"] = ""
     if "selected_model_ids" not in st.session_state:

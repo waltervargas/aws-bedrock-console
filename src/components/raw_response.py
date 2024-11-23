@@ -11,11 +11,14 @@ def display_responses(raw_requests):
 
     # Add a button to trigger the API call
     if st.button("Call Bedrock InvokeModel API"):
+        # clear the logs
+        st.session_state["log_handler"].log_buffer.truncate(0)
+        st.session_state["log_handler"].log_buffer.seek(0)
         for model_id, request in raw_requests.items():
             # Send the request using the Bedrock API
             response = invoke_model_api(model_id, request)
 
             # Display the response dynamically
             st.write(f"Response for Model ID: {model_id}")
-            st.code(json.dumps(response, indent=4), language="json")
+            st.code(json.dumps(response, indent=4), language="json", wrap_lines=True)
 

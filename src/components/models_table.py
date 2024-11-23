@@ -28,7 +28,7 @@ def display(models):
     else:
         filtered_df = df
 
-    # Display the full dataframe filtered by selection
-    st.dataframe(filtered_df, use_container_width=True)
+    with st.expander("Models", expanded=False):
+        st.dataframe(filtered_df, use_container_width=True)
 
     return selected_model_ids
