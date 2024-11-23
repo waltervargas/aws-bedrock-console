@@ -1,0 +1,115 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Packages
+*.egg
+*.egg-info/
+dist/
+build/
+eggs/
+lib/
+lib64/
+parts/
+var/
+sdist/
+*.egg-info/
+.installed.cfg
+*.egg-info/
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Virtual environments
+venv/
+ENV/
+env/
+.venv/
+env.bak/
+env/
+
+# Streamlit specific
+.streamlit/
+.stcache/
+.stcache/
+# Ignore Streamlit secrets file
+.secrets.toml
+
+# AWS CLI credentials and sensitive data
+.aws/
+*.pem
+*.key
+credentials.json
+*.crt
+
+# macOS system files
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows system files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Python debug logs
+*.log
+*.out
+
+# Environment variable files
+.env
+.env.*
+*.envrc
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints
+
+# PyCharm
+.idea/
+
+# VSCode
+.vscode/
+
+# Coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+
+# Logs and databases
+*.log
+*.sqlite3
+
+# Temporary files
+*.swp
+*.swo
+*~
+*.tmp
+
+# Test results
+.junit/
+test-results.xml
+
+# Ignore generated models
+*.pb
+*.h5
+
+# Ignore boto3 specific logs and debug traces
+boto3-debug.log
+botocore-debug.log
+
+# Ignore temporary JSON files
+*.json~
