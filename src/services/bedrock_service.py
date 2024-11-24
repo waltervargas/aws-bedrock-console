@@ -1,5 +1,6 @@
 import json
 import boto3
+import streamlit as st
 
 def invoke_model_api(model_id, request):
     # Initialize Bedrock client
@@ -20,6 +21,7 @@ def invoke_model_api(model_id, request):
 import boto3
 from botocore.exceptions import ClientError
 
+st.cache_data
 def list_fundation_models_api(region):
     """
     Fetches the foundation models from AWS Bedrock
